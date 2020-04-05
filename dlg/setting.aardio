@@ -13,9 +13,9 @@ chkHalfWidthInputModeByDefault={cls="plus";text='\uF0C8 英文标点默认使用
 chkUseEnglishPunctuationsInChineseInputMode={cls="plus";text='\uF0C8 中文输入时使用英文标点';left=156;top=219;right=596;bottom=250;align="left";dl=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=15};
 chkWubiAutoFinalize={cls="plus";text='\uF0C8 四码唯一时自动上屏（ 拼音混输时不建议开启 ）';left=156;top=106;right=596;bottom=137;align="left";dl=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=11};
 editMaxCandidates={cls="plus";left=768;top=460;right=810;bottom=489;align="left";border={bottom=1;color=-16744448};dr=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=23};
-editWubiDescription={cls="plus";left=284;top=365;right=565;bottom=398;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=10};
-editWubiFont={cls="plus";left=284;top=456;right=573;bottom=489;border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=8};
-editWubiIcon={cls="plus";left=284;top=411;right=810;bottom=444;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=7};
+editWubiDescription={cls="plus";left=284;top=365;right=565;bottom=398;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=true;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=10};
+editWubiFont={cls="plus";left=284;top=456;right=573;bottom=489;border={bottom=1;color=-16744448};dl=1;dr=1;editable=true;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=8};
+editWubiIcon={cls="plus";left=284;top=411;right=810;bottom=444;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=true;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=7};
 plus={cls="plus";left=160;top=346;right=684;bottom=356;border={bottom=1;color=-4144960};dl=1;dr=1;z=24};
 plus2={cls="plus";left=160;top=86;right=684;bottom=96;border={bottom=1;color=-4144960};dl=1;dr=1;z=13};
 plus3={cls="plus";left=160;top=286;right=684;bottom=296;border={bottom=1;color=-4144960};dl=1;dr=1;z=16};
@@ -129,30 +129,31 @@ winform.btnSave.oncommand = function(id,event){
 	reg.close();
 	
 	var regSettings = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
-	regSettings.setDwValue("PinyinMixEnable",winform.radioPinyinMixEnable.checked?1:0)
-	regSettings.setDwValue("Default Mode",winform.chkDefaultModeEn.checked?1:0)
-	regSettings.setDwValue("Enable Wubi EUDP",winform.chkEnableWubiUdp.checked?1:0)
+	regSettings.setDwValue("Floating Icon Time Key",0);
+	regSettings.setDwValue("PinyinMixEnable",winform.radioPinyinMixEnable.checked?1:0);
+	regSettings.setDwValue("Default Mode",winform.chkDefaultModeEn.checked?1:0);
+	regSettings.setDwValue("Enable Wubi EUDP",winform.chkEnableWubiUdp.checked?1:0);
 	
-	regSettings.setDwValue("HalfWidthInputModeByDefault",winform.chkHalfWidthInputModeByDefault.checked?1:0)
+	regSettings.setDwValue("HalfWidthInputModeByDefault",winform.chkHalfWidthInputModeByDefault.checked?1:0);
 	regSettings.setDwValue("UseEnglishPunctuationsInChineseInputMode",winform.chkUseEnglishPunctuationsInChineseInputMode.checked?1:0)
 	
 	if(winform.radioPinyinMixEnable.checked){
-		regSettings.setDwValue("WubiAutoFinalizeForMixEnable",winform.chkWubiAutoFinalize.checked?1:0)
+		regSettings.setDwValue("WubiAutoFinalizeForMixEnable",winform.chkWubiAutoFinalize.checked?1:0);
 	}
 	else {
-		regSettings.setDwValue("Wubi Auto-finalize Enable",winform.chkWubiAutoFinalize.checked?1:0)
+		regSettings.setDwValue("Wubi Auto-finalize Enable",winform.chkWubiAutoFinalize.checked?1:0);
 	}
 	regSettings.close();
 	
 	var reg = win.reg("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\CTF\TIP\{6a498709-e00b-4c45-a018-8f9e4081ae40}\LanguageProfile\0x00000804\{82590C13-F4DD-44f4-BA1D-8667246FDF8E}");	
 	if(#winform.editWubiDescription.text){
-		reg.setSzValue("Display Description",winform.editWubiDescription.text) 
+		reg.setSzValue("Display Description",winform.editWubiDescription.text); 
 	}
 	else {
-		reg.setSzValue("Display Description","@%SystemRoot%\SYSTEM32\input.dll,-5302") 
+		reg.setSzValue("Display Description","@%SystemRoot%\SYSTEM32\input.dll,-5302"); 
 	}
 	
-	var iconPath = string.trim(winform.editWubiIcon.text)
+	var iconPath = string.trim(winform.editWubiIcon.text);
 	if(#iconPath){
 		var iconFile,iconIndex = string.match(iconPath,"(.+),(\d+)")
 		if(!a){
